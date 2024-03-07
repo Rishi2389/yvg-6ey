@@ -1,0 +1,87 @@
+from dynpy.models.mechanics.engine import EngineVerticalSpringGravity
+from sympy import *
+from sympy.physics.mechanics import init_vprinting
+init_vprinting()
+
+
+# Class instance assignment
+dynsys = EngineVerticalSpringGravity().get_constant_velocity()
+
+display('Data assumed fot calculations is the following:')
+display(dynsys._given_data)
+
+# Displaying the scheme
+display(dynsys.preview())
+
+
+# Kinetic energy
+Ek = Symbol('E_k', positive=True)
+Ek_eq = Eq(Ek, dynsys._kinetic_energy, evaluate=False)
+display(Ek_eq)
+
+
+# Potential energy
+Ep = Symbol('E_p', positive=True)
+Ep_eq = Eq(Ep, dynsys._potential_energy, evaluate=False)
+display(Ep_eq)
+
+
+# Dissipative potential
+D = Symbol('D', positive=True)
+D_eq = Eq(D, dynsys._dissipative_potential, evaluate=False)
+display(D_eq)
+
+
+# Lagrangian of the system
+L = Symbol('L', positive=True)
+L_eq = Eq(L, dynsys.lagrangian(), evaluate=False)
+display(L_eq)
+
+
+# Equations of motion
+eoms_eq = Eq(dynsys._eoms[0], 0)
+display(eoms_eq)
+
+
+# Inertia matrix
+M = Symbol('M', positive=True)
+M_eq = Eq(M, dynsys.inertia_matrix(), evaluate=False)
+display(M_eq)
+
+
+# Stiffness matrix
+K = Symbol('K', positive=True)
+K_eq = Eq(K, dynsys.stiffness_matrix(), evaluate=False)
+display(K_eq)
+
+
+# Damping matrix
+D = Symbol('D', positive=True)
+D_eq = Eq(D, dynsys.damping_matrix(), evaluate=False)
+display(D_eq)
+
+
+# Funfdamental matrix
+A = Symbol('A', positive=True)
+A_eq = Eq(A, dynsys.fundamental_matrix(), evaluate=False)
+display(A_eq)
+
+
+# Characteristic polynomial
+Delta = Symbol('Delta', positive=True)
+Delta_eq = Eq(Delta, dynsys.fundamental_matrix().det().expand().simplify().simplify().expand(), evaluate=False)
+display(Delta_eq)
+
+
+# General solution
+gen_sol = dynsys._ode_system.general_solution.as_eq_list()
+
+display(gen_sol[0])
+display(gen_sol[1])
+
+
+# Steady solution
+steady_sol = dynsys._ode_system.steady_solution.as_eq_list()
+
+display(steady_sol[0])
+display(steady_sol[1])
